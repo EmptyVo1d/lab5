@@ -3,4 +3,4 @@ project(lab5 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(lab5 main.c Create.h createFile.c createList.c completionList.c Qsort.c outList.c comporator.c)
+add_executable(lab5 main.c MyLibrary.h createFile.c completionStruct.c AlgQsort.c AlgShaker.c PairInsertionSort.c)
