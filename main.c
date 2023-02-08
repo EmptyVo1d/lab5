@@ -80,5 +80,6 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < col; i++)
         printf("=========\nbrand: %s\nname: %s\nmileage: %lf\n", arr[i].brand, arr[i].name, arr[i].mileage);
     fclose(in);
+    free(in);
     return 0;
 }

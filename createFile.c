@@ -44,7 +44,7 @@ char *name() {
         if (i != 2) {
             point++;
             str = realloc(str, (point) * sizeof(char));
-            str = strcat(str, " ");
+            str = strcat(str, " ");   
         }
         if (i == 2) str[point] = '\0';
         if (name1 != NULL) free(name1);

@@ -10,7 +10,7 @@ void swap(car *x, car *y) {
     *x = *y;
     *y = temp;
 }
-int comparator(const void* x, const void* y, char *field, char *line){
+int comparator1(const void* x, const void* y, char *field, char *line){
     if((strcmp(field, "mileage") == 0) && (strcmp(line, "up")==0)){
         {
             const struct car* k = (const struct car*)x;
@@ -61,11 +61,11 @@ void AlgShaker(char *field, char *line, car *arr, int col){
     right = col - 1;
     while (left <= right) {
         for (int i = right; i >= left; --i)
-            if (comparator(arr + i - 1, arr + i, field, line) > 0)
+            if (comparator1(arr + i - 1, arr + i, field, line) > 0)
                 swap(arr + i - 1, arr + i);
         left++;
         for (int i = left; i <= right; ++i)
-            if (comparator(arr + i - 1, arr + i, field, line) > 0)
+            if (comparator1(arr + i - 1, arr + i, field, line) > 0)
                 swap(arr + i - 1, arr + i);
         right--;
     }
