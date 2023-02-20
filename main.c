@@ -60,6 +60,7 @@ int main(int argc, char *argv[]) {
         arr = (car *) realloc(arr, sizeof(car) * (col + 1));
         if (arr == NULL) {
             printf("Error\n");
+            free(Pstring);
             return 1;
         }
         fscanf(in, "%[^\n]", Pstring);
@@ -73,28 +74,30 @@ int main(int argc, char *argv[]) {
         arr[col].mileage = strtod(Pstring, &end);
         col++;
         free(Pstring);
+        Pstring = NULL;
     }
     if (strcmp(alg, "qsort") == 0) AlgQsort(field, line, arr, col);
     if (strcmp(alg, "shaker") == 0) AlgShaker(field, line, arr, col);
-    if (strcmp(alg, "pis") == 0) PairInsertionSort(field, line, arr, col);
-    for (int i = 0; i < col; i++)
-        printf("=========\nbrand: %s\nname: %s\nmileage: %lf\n", arr[i].brand, arr[i].name, arr[i].mileage);
+    if (strcmp(alg, "pis") == 0) AlgPis(field, line, arr, col);
+    FILE *output = NULL;
+    if ((output = fopen(fileOUT, "w+")) == NULL) exit(1);
+    for(int i = 0; i < col; i++) {
+        fprintf(output, "=========\n");
+        fprintf(output, "brand: %s\n", arr[i].brand);
+        fprintf(output, "name: %s\n", arr[i].name);
+        fprintf(output, "mileage: %.4lf\n", arr[i].mileage);
+    }
+    fclose(output);
+    for (int j = 0; j < col; j++){
+        free(arr[j].brand);
+        free(arr[j].name);
+    }
+    free(alg);
+    free(field);
+    free(line);
     fclose(in);
-    free(in);
+    free(fileIN);
+    free(fileOUT);
+    free(arr);
     return 0;
 }
-//⠄⠄⠄⢰⣧⣼⣯⠄⣸⣠⣶⣶⣦⣾⠄⠄⠄⠄⡀⠄⢀⣿⣿⠄⠄⠄⢸⡇⠄⠄
-//⠄⠄⠄⣾⣿⠿⠿⠶⠿⢿⣿⣿⣿⣿⣦⣤⣄⢀⡅⢠⣾⣛⡉⠄⠄⠄⠸⢀⣿⠄
-//⠄⠄⢀⡋⣡⣴⣶⣶⡀⠄⠄⠙⢿⣿⣿⣿⣿⣿⣴⣿⣿⣿⢃⣤⣄⣀⣥⣿⣿⠄
-//⠄⠄⢸⣇⠻⣿⣿⣿⣧⣀⢀⣠⡌⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠿⣿⣿⣿⠄
-//⠄⢀⢸⣿⣷⣤⣤⣤⣬⣙⣛⢿⣿⣿⣿⣿⣿⣿⡿⣿⣿⡍⠄⠄⢀⣤⣄⠉⠋⣰
-//⠄⣼⣖⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⢇⣿⣿⡷⠶⠶⢿⣿⣿⠇⢀⣤
-//⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⣷⣶⣥⣴⣿⡗
-//⢀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠄
-//⢸⣿⣦⣌⣛⣻⣿⣿⣧⠙⠛⠛⡭⠅⠒⠦⠭⣭⡻⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠄
-//⠘⣿⣿⣿⣿⣿⣿⣿⣿⡆⠄⠄⠄⠄⠄⠄⠄⠄⠹⠈⢋⣽⣿⣿⣿⣿⣵⣾⠃⠄
-//⠄⠘⣿⣿⣿⣿⣿⣿⣿⣿⠄⣴⣿⣶⣄⠄⣴⣶⠄⢀⣾⣿⣿⣿⣿⣿⣿⠃⠄⠄
-//⠄⠄⠈⠻⣿⣿⣿⣿⣿⣿⡄⢻⣿⣿⣿⠄⣿⣿⡀⣾⣿⣿⣿⣿⣛⠛⠁⠄⠄⠄
-//⠄⠄⠄⠄⠈⠛⢿⣿⣿⣿⠁⠞⢿⣿⣿⡄⢿⣿⡇⣸⣿⣿⠿⠛⠁⠄⠄⠄⠄⠄
-//.⠄⠄⠄⠄⠄⠄⠉⠻⣿⣿⣾⣦⡙⠻⣷⣾⣿⠃⠿⠋⠁⠄⠄⠄⠄⠄⢀⣠⣴
-//⣿⣿⣿⣶⣶⣮⣥⣒⠲⢮⣝⡿⣿⣿⡆⣿⡿⠃⠄⠄⠄⠄⠄⠄⠄⣠⣴⣿⣿⣿

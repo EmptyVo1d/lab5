@@ -1,7 +1,3 @@
-//
-// Created by evgen on 03.01.2023.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,7 +8,7 @@ char *brand() {
     int len = 1 + rand() % (13) + 3;
     char *str = calloc((len + 1), sizeof(char));
     for (int i = 0; i < len; i++) {
-        int flag = rand() % (int) (sizeof alf);
+        int flag = rand() % (int) (sizeof alf - 1);
         str[i] = alf[flag];
     }
     str[len] = '\0';
@@ -20,34 +16,35 @@ char *brand() {
 }
 
 char *name() {
-    const char alf1[] = "abcdefghijklmnopqrstuvwxyz";
-    const char alf2[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    char *str = calloc(1, sizeof(char));
-    int flag = 0;
-    int point = 1;
+    const char alf[] = "abcdefghijklmnopqrstuvwxyz";
+    const char ALF[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    char *str = malloc(100 * sizeof(char));
+    char *temp;
+    int len = 0;
     for (int i = 0; i < 3; i++) {
-        int len = rand() % (10) + 1;
-        point = point + len;
-        char *name1 = calloc(len + 1, sizeof(char));
-        for (int j = 0; j < len; j++) {
-            if (j == 0) {
-                flag = rand() % (int) (sizeof alf2 - 1);
-                name1[j] = alf2[flag];
+        len = rand() % (10) + 3;
+        temp = malloc((len + 1) * sizeof(char));
+        if (len) {
+            for (int n = 0; n < len; n++) {
+                if(n != 0) {
+                    int col = rand() % (int) (sizeof alf - 1);
+                    temp[n] = alf[col];
+                }
+                else {
+                    int col = rand() % (int) (sizeof ALF - 1);
+                    temp[n] = ALF[col];
+                }
             }
+            temp[len] = '\0';
+            if (i != 0) str = strcat(str, " ");
             else {
-                flag = rand() % (int) (sizeof alf1 - 1);
-                name1[j] = alf1[flag];
+                str = strcpy(str, temp);
+                if (temp != NULL) free(temp);
+                continue;
             }
+            str = strcat(str, temp);
         }
-        str = realloc(str, (point) * sizeof(char));
-        str = strcat(str, name1);
-        if (i != 2) {
-            point++;
-            str = realloc(str, (point) * sizeof(char));
-            str = strcat(str, " ");   
-        }
-        if (i == 2) str[point] = '\0';
-        if (name1 != NULL) free(name1);
+        if (temp != NULL) free(temp);
     }
     return str;
 }
@@ -67,7 +64,11 @@ FILE *createFile(char *fileIN) {
             return NULL;
         }
         for (int n = 0; n < sizeI; n++) {
-            fprintf(Fin, "%s\n%s\n%lf\n", brand(), name(), mileage());
+            char *b = brand();
+            char *na = name();
+            fprintf(Fin, "%s\n%s\n%.4lf\n", b, na, mileage());
+            if(b != NULL) free(b);
+            if(na != NULL) free(na);
         }
         fclose(Fin);
     }

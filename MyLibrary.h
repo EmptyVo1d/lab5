@@ -28,6 +28,6 @@ void AlgQsort(char *field, char *line, car *arr, int col);
 
 void AlgShaker(char *field, char *line, car *arr, int col);
 
-void PairInsertionSort(char *field, char *line, car *arr, int col);
+void AlgPis(char *field, char *line, car *arr, int col);
 
 #endif //LAB5_MYLIBRARY_H
